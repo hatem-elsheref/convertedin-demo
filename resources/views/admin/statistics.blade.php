@@ -6,11 +6,13 @@
         <table class="table table-light table-hover">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>User</th>
                     <th>Tasks Count</th>
                 </tr>
-                @foreach($topUsers as $user)
+                @foreach($topUsers as $index => $user)
                     <tr>
+                        <td>{{$index + 1 }}</td>
                         <td>{{$user->user->name}}</td>
                         <td>{{$user->total_tasks}}</td>
                     </tr>
