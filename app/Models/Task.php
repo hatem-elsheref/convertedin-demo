@@ -18,9 +18,9 @@ class Task extends Model
         $builder->where('assigned_by_id', request()->user()->id);
     }
 
-    public function scopeAssignedToMe(Builder $builder) :void
+    public function scopeAssignedToMe(Builder $builder, $request) :void
     {
-        $builder->where('assigned_to_id', request()->user()->id);
+        $builder->where('assigned_to_id', $request->user()->id);
     }
 
 

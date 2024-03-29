@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +16,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Auth::routes([
+    'login'    => true,
+    'logout'   => true,
+    'register' => true,
+    'reset'    => false,
+    'confirm'  => false ,
+    'verify'   => false
+]);
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/'     , [HomeController::class, 'index'])->name('home');
+Route::get('/home' , [HomeController::class, 'index'])->name('dashboard');
+
 Route::middleware(['auth'])->group(function (){
 
-    Route::get('my-tasks', [TaskController::class, 'userTasks']);
+    Route::get('my-tasks', [TaskController::class, 'userTasks'])->name('me.tasks');
 
-    Route::middleware('is_admin')->prefix('admin')->group(function (){
-       Route::resource('tasks', TaskController::class)->except('show');
+    Route::middleware('is_admin')->as('admin.')->prefix('admin')->group(function (){
+       Route::resource('tasks', TaskController::class)->only('index', 'create', 'store');
     });
 });

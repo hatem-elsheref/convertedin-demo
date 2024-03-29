@@ -25,5 +25,10 @@ class UpdateUserTasksCount extends Command
      */
     public function handle()
     {
+        $lastCheck = cache()->get('statistics_last_check');
+
+
+
+        cache()->put('statistics_last_check', now());
     }
 }

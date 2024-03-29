@@ -4,41 +4,44 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskRequest;
-use App\Models\Task;
 use App\Services\TaskService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TaskController extends Controller
 {
     public function __construct(private readonly TaskService $taskService){}
 
-    public function index(Request $request)
+    public function index(Request $request) :View|JsonResponse
     {
+        if ($request->ajax())
+            return $this->taskService->listAllWithPagination($request);
 
+
+        $html = $this->taskService->htmlBuilder();
+
+        return view('admin.task.index', compact('html'));
     }
 
-    public function create()
+    public function userTasks(Request $request) :View|JsonResponse
     {
+        if ($request->ajax())
+            return $this->taskService->tasksAssignedToMe($request);
 
+        $html = $this->taskService->htmlBuilder();
+
+        return view('tasks', compact('html'));
     }
 
-    public function edit(Task $task)
+    public function create() :View
     {
-
+        return view('admin.task.create');
     }
 
-    public function store(TaskRequest $request)
+    public function store(TaskRequest $request) :RedirectResponse
     {
-
-    }
-
-    public function update(Task $task, TaskRequest $request)
-    {
-
-    }
-
-    public function destroy(Task $task)
-    {
-
+        return redirect()->route('admin.tasks.index')->with('status', $this->taskService->createTask($request));
     }
 }
