@@ -1,23 +1,73 @@
 @extends('layouts.master')
 
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
 @section('content')
-    <h2>Add New Tasks</h2>
     <div class="container">
-        <form>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <p style="text-align: left">Add New Task</p>
+
+        <form method="post" action="{{route('admin.tasks.store')}}">
+            @csrf
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" required name="title" id="title" placeholder="Enter Title" value="{{old('title')}}">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="admin">Admin Name</label>
+                        <select class="form-control" name="assigned_by_id" id="admin" required>
+                            <option disabled selected>__</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="user">Assigned  Name</label>
+                        <select class="form-control" name="assigned_to_id" id="user" required>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" required placeholder="Task Description" id="description" name="description"  rows="3">{{old('description')}}</textarea>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-2">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+
         </form>
     </div>
+@endsection
+
+@section('js')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#admin').select2({
+                ajax: {
+                    url: '{{route('admin.users.index', 'admin')}}',
+                    dataType: 'json'
+                }
+            });
+            $('#user').select2({
+                ajax: {
+                    url: '{{route('admin.users.index', 'user')}}',
+                    dataType: 'json'
+                }
+            });
+        });
+    </script>
 @endsection

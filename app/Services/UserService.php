@@ -4,17 +4,16 @@ namespace App\Services;
 
 use App\Enums\Role;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserService
 {
-    public function listAllUsers(): Collection
+    public function list($request, $role) :LengthAwarePaginator
     {
-        return User::query()->select('id', 'name')->where('role', Role::USER->value)->get();
-    }
-
-    public function listAllAdmins(): Collection
-    {
-        return User::query()->select('id', 'name')->where('role', Role::ADMIN->value)->get();
+        return User::query()
+            ->select('id', 'name')
+            ->where('role', $role === 'user' ? Role::USER->value : Role::ADMIN->value)
+            ->where('name', 'LIKE', "%".$request->query('q')."%")
+            ->paginate(10);
     }
 }

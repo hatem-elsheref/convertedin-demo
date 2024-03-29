@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,8 @@ Route::middleware(['auth'])->group(function (){
 
     Route::middleware('is_admin')->as('admin.')->prefix('admin')->group(function (){
        Route::resource('tasks', TaskController::class)->only('index', 'create', 'store');
-        Route::get('statistics', [TaskController::class, 'statistics'])->name('statistics');
+       Route::get('statistics'  , [TaskController::class, 'statistics'])->name('statistics');
+       Route::get('users/{type}', [UserController::class, 'index'])->name('users.index')->where('type', 'user|admin');
 
     });
 });

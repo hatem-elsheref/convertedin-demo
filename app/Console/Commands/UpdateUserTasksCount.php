@@ -15,8 +15,7 @@ class UpdateUserTasksCount extends Command
      *
      * @var string
      */
-//    protected $signature = 'tasks:update-user-tasks-count';
-    protected $signature = 'a';
+    protected $signature = 'tasks:update-user-tasks-count';
 
     /**
      * The console command description.
@@ -32,7 +31,6 @@ class UpdateUserTasksCount extends Command
     {
         $lastCheck = cache()->get('statistics_last_check');
 
-        $lastCheck = null;
         $users = User::query()->where('role', Role::USER->value)
             ->select('id')
             ->withCount('assignedTasks as total')

@@ -29,8 +29,7 @@ class TaskService
 
     public function tasksAssignedToMe($request) :JsonResponse
     {
-        $query = Task::query()->assignedToMe($request);
-        return $this->listTasks($query, $request);
+        return $this->listTasks(Task::query()->assignedToMe($request), $request);
     }
 
     private function listTasks($query, $request) :JsonResponse
@@ -64,6 +63,10 @@ class TaskService
 
     public function getTopUsers() :Collection
     {
-        return Statistics::query()->with('user')->orderByDesc('total_tasks')->limit(10)->get();
+        return Statistics::query()
+            ->with('user')
+            ->orderByDesc('total_tasks')
+            ->limit(10)
+            ->get();
     }
 }
