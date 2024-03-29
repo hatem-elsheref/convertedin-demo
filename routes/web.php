@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index']);
+Route::middleware(['auth'])->group(function (){
+
+    Route::get('my-tasks', [TaskController::class, 'userTasks']);
+
+    Route::middleware('is_admin')->prefix('admin')->group(function (){
+       Route::resource('tasks', TaskController::class)->except('show');
+    });
+});
