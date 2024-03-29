@@ -20,7 +20,6 @@ class TaskService
         return $this->listTasks($query, $request);
     }
 
-
     public function createTask($request) :Task|Model
     {
         return Task::query()->create($request->validated());
