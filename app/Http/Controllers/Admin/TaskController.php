@@ -44,4 +44,11 @@ class TaskController extends Controller
     {
         return redirect()->route('admin.tasks.index')->with('status', $this->taskService->createTask($request));
     }
+
+    public function statistics() :View
+    {
+        $topUsers = $this->taskService->getTopUsers();
+
+        return view('admin.statistics', compact('topUsers'));
+    }
 }

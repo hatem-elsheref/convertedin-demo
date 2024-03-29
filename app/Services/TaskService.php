@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Statistics;
 use App\Models\Task;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
@@ -60,4 +62,8 @@ class TaskService
             ->searching(0);
     }
 
+    public function getTopUsers() :Collection
+    {
+        return Statistics::query()->with('user')->orderByDesc('total_tasks')->limit(10)->get();
+    }
 }

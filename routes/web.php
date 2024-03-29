@@ -34,5 +34,7 @@ Route::middleware(['auth'])->group(function (){
 
     Route::middleware('is_admin')->as('admin.')->prefix('admin')->group(function (){
        Route::resource('tasks', TaskController::class)->only('index', 'create', 'store');
+        Route::get('statistics', [TaskController::class, 'statistics'])->name('statistics');
+
     });
 });

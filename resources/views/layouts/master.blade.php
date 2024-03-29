@@ -54,6 +54,7 @@
                     @if(auth()->user()->isAdmin())
                         <a class="nav-link @if(request()->route()->getName() === 'admin.tasks.index')  active @endif" href="{{route('admin.tasks.index')}}">Tasks</a>
                         <a class="nav-link @if(request()->route()->getName() === 'admin.tasks.create') active @endif" href="{{route('admin.tasks.create')}}">Add New Tasks</a>
+                        <a class="nav-link @if(request()->route()->getName() === 'admin.statistics') active @endif" href="{{route('admin.statistics')}}">Statistics</a>
                     @else
                         <a class="nav-link @if(request()->route()->getName() === 'me.tasks') active @endif" href="{{route('me.tasks')}}">My Tasks</a>
                     @endif
