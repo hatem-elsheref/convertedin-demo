@@ -25,10 +25,6 @@ class TaskTest extends TestCase
         $response->assertJsonPath('data.0.creator.id', $latestTask->assigned_by_id);
         $response->assertJsonPath('data.0.user.id', $latestTask->assigned_to_id);
 
-//        $this->assertEquals($response->json('data.0.id'), $latestTask->id, 'Task Listing Has A Valid Data');
-//        $this->assertEquals($response->json('data.0.title'), $latestTask->title, 'Task Listing Has A Valid Data');
-//        $this->assertEquals($response->json('data.0.assigned_by_id'), $latestTask->assigned_by_id, 'Task Listing Has A Valid Data');
-
         $response->assertStatus(200);
 
     }
