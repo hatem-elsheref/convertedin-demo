@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\Role;
+use App\Jobs\UpdateUsersTotalCount;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -31,23 +32,17 @@ class UpdateUserTasksCount extends Command
     {
         $lastCheck = cache()->get('statistics_last_check');
 
-        $items = Task::query()->when($lastCheck, function ($query) use ($lastCheck){
-            $query->where('created_at', '>=', $lastCheck)
-                ->orWhere('updated_at', '>=', $lastCheck);
-        })->get()->groupBy('assigned_to_id');
+        $lastCheck = null;
+        $users = User::query()->where('role', Role::USER->value)
+            ->select('id')
+            ->withCount('assignedTasks as total')
+            ->whereHas('assignedTasks', fn ($query) => $query->when($lastCheck, function ($query) use ($lastCheck){
+                $query->where('created_at', '>=', $lastCheck);
+            }))->get();
 
-        $items = User::query()->where('role', Role::USER->value)
-            ->select('id', 'assigned_to_id')
-            ->withCount('assignedTasks')
-            ->whereHas('assignedTasks', fn ($query) => $query->when(function ($query) use ($lastCheck){
-                $query->where('created_at', '>=', $lastCheck)->orWhere('updated_at', '>=', $lastCheck);
-            }));
+        foreach ($users as $user)
+            UpdateUsersTotalCount::dispatch($user);
 
-//        foreach ($items as $userId => $tasks)
-
-
-
-
-//        cache()->put('statistics_last_check', now());
+        cache()->put('statistics_last_check', now());
     }
 }
