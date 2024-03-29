@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Enums\Role;
 use App\Jobs\UpdateUsersTotalCount;
-use App\Models\Task;
 use App\Models\User;
 use Illuminate\Console\Command;
 

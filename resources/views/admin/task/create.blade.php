@@ -29,8 +29,7 @@
                     <div class="form-group">
                         <label for="user">Assigned  Name</label>
                         <select class="form-control" name="assigned_to_id" id="user" required>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
+                            <option disabled selected>__</option>
                         </select>
                     </div>
                 </div>
