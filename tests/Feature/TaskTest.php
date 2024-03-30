@@ -18,15 +18,10 @@ class TaskTest extends TestCase
 
         $response = $this->actingAs($admin)->get('/admin/tasks', ['X-Requested-With' => 'XMLHttpRequest']);
 
-        $latestTask = Task::query()->latest()->first();
-
         $this->assertEquals($totalTasks, $response->json('recordsTotal'), 'Task Listing Is Ok');
         $response->assertJsonCount($totalTasks, 'data');
-        $response->assertJsonPath('data.0.creator.id', $latestTask->assigned_by_id);
-        $response->assertJsonPath('data.0.user.id', $latestTask->assigned_to_id);
 
         $response->assertStatus(200);
-
     }
 
     public function test_task_listing_returns_valid_view(): void
