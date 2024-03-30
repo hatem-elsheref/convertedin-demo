@@ -21,7 +21,11 @@ DB_DATABASE=converted_in
 DB_USERNAME=admin
 DB_PASSWORD=secret
 ```
-#### `` Open Webserver Container And Run ```
+- Don't forget to make cron job to run  ``` php artisan schedule:run ``` to run needed commands
+- Don't forget to run ``` php artisan queue:work ``` to update statistics
+
+#### `` Open Webserver Container And Run ``
+
 ```
 php artisan migrate:fresh --seed
 ap2enmod rewrite
