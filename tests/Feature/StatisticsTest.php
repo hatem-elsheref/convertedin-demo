@@ -24,11 +24,9 @@ class StatisticsTest extends TestCase
             ->select('id')
             ->where('id', $user->id)
             ->withCount('assignedTasks as total')
-            ->whereHas('assignedTasks')
             ->first();
 
         UpdateUsersTotalCount::dispatchSync($_user);
-
 
         $totalTasksBeforeAddingNewTasks = Statistics::query()->where('user_id', $user->id)->first()->total_tasks;
 
@@ -53,7 +51,6 @@ class StatisticsTest extends TestCase
             ->select('id')
             ->where('id', $user->id)
             ->withCount('assignedTasks as total')
-            ->whereHas('assignedTasks')
             ->first();
 
         UpdateUsersTotalCount::dispatchSync($_user);

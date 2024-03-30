@@ -22,6 +22,7 @@ class TaskTest extends TestCase
         $response->assertJsonCount($totalTasks, 'data');
 
         $response->assertStatus(200);
+
     }
 
     public function test_task_listing_returns_valid_view(): void
